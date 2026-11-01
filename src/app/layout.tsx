@@ -15,8 +15,15 @@ export const metadata: Metadata = {
     default: "Visual Storytelling — Portfolio",
     template: "%s — Visual Storytelling",
   },
+
   description:
     "Personal photography portfolio: projects, galleries and contact. Built with Next.js.",
+
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/apple-icon.png",
+  },
 };
 
 export default function RootLayout({
