@@ -1,0 +1,44 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Category {
+  id           String   @id @default(cuid())
+  slug         String   @unique
+  title        String
+  titleFa      String   @default("")
+  client       String   @default("")
+  projectTitle String   @default("")
+  year         String   @default("")
+  category     String   @default("")
+  location     String   @default("")
+  role         String   @default("")
+  description  String   @default("")
+  extraFields  String   @default("[]")
+  coverImageId String?
+  order        Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  images       Image[]
+}
+
+model Image {
+  id         String   @id @default(cuid())
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  file       String
+  width      Int      @default(0)
+  height     Int      @default(0)
+  order      Int      @default(0)
+  createdAt  DateTime @default(now())
+}
+
+model Setting {
+  key   String @id
+  value String
+}
