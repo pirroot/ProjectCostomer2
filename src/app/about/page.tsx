@@ -20,6 +20,15 @@ export default async function AboutPage() {
         <h1 className="mb-8 text-[11px] font-bold uppercase tracking-[0.25em] text-neutral-400">
           {settings.aboutTitle || 'About Me'}
         </h1>
+        {settings.aboutImage.trim() && (
+          <div className="mb-10 aspect-[3/4] w-full overflow-hidden bg-neutral-100">
+            <img
+              src={settings.aboutImage}
+              alt={settings.aboutTitle || 'About me'}
+              className="h-full w-full object-cover"
+            />
+          </div>
+        )}
         {settings.aboutBody.trim() && (
           <RichText
             text={settings.aboutBody}

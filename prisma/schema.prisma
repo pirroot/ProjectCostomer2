@@ -19,6 +19,7 @@ model Category {
   location     String   @default("")
   role         String   @default("")
   description  String   @default("")
+  descriptionFa String  @default("")
   extraFields  String   @default("[]")
   coverImageId String?
   order        Int      @default(0)

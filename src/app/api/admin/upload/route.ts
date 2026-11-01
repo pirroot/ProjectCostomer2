@@ -66,6 +66,37 @@ export async function POST(req: Request) {
     }
   }
 
+  /* ---------- about page portrait (3:4) ---------- */
+  if (type === 'about') {
+    const file = form.get('file')
+    if (!(file instanceof File) || file.size === 0) {
+      return NextResponse.json({ ok: false, error: 'فایلی انتخاب نشده است.' }, { status: 400 })
+    }
+    if (file.size > MAX_FILE_SIZE) {
+      return NextResponse.json({ ok: false, error: 'حجم عکس حداکثر ۲۵ مگابایت است.' }, { status: 400 })
+    }
+    try {
+      await ensureDir()
+      const buf = Buffer.from(await file.arrayBuffer())
+      const out = `about-${Date.now()}.jpg`
+      await sharp(buf)
+        .rotate()
+        .resize({ width: 1400, height: 1867, fit: 'inside', withoutEnlargement: true })
+        .jpeg({ quality: 88 })
+        .toFile(path.join(uploadsDir(), out))
+      const url = `/media/${out}`
+      await db.setting.upsert({
+        where: { key: 'aboutImage' },
+        create: { key: 'aboutImage', value: url },
+        update: { value: url },
+      })
+      revalidatePath('/', 'layout')
+      return NextResponse.json({ ok: true, url })
+    } catch {
+      return NextResponse.json({ ok: false, error: 'پردازش تصویر ناموفق بود.' }, { status: 500 })
+    }
+  }
+
   /* ---------- category photos ---------- */
   const categoryId = String(form.get('categoryId') ?? '')
   const files = form.getAll('files').filter((f): f is File => f instanceof File)

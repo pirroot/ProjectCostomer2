@@ -38,7 +38,6 @@ export default async function AdminCategoryPage({ params }: PageProps) {
           id: category.id,
           title: category.title,
           slug: category.slug,
-          titleFa: category.titleFa,
           client: category.client,
           projectTitle: category.projectTitle,
           year: category.year,
@@ -46,6 +45,7 @@ export default async function AdminCategoryPage({ params }: PageProps) {
           location: category.location,
           role: category.role,
           description: category.description,
+          descriptionFa: category.descriptionFa,
           extra: parseExtraFields(category.extraFields),
         }}
       />

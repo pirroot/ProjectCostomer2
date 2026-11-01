@@ -124,9 +124,6 @@ export default function Slideshow({
                       className="h-full w-full object-cover"
                       draggable={false}
                     />
-                    <span className="absolute bottom-3 right-3 rounded-sm bg-black/35 px-2 py-0.5 text-[10px] tracking-[0.15em] text-white/90">
-                      {img.width}×{img.height}
-                    </span>
                   </>
                 ) : (
                   <div aria-hidden className="h-full w-full" />

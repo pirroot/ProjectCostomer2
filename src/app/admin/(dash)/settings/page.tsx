@@ -21,6 +21,7 @@ export default async function AdminSettingsPage() {
           logoUrl: settings.logoUrl,
           aboutTitle: settings.aboutTitle,
           aboutBody: settings.aboutBody,
+          aboutImage: settings.aboutImage,
           contactEmail: settings.contactEmail,
           contactPhone: settings.contactPhone,
           contactInstagram: settings.contactInstagram,

@@ -95,7 +95,6 @@ export async function saveCategory(data: {
   id: string
   title: string
   slug: string
-  titleFa: string
   client: string
   projectTitle: string
   year: string
@@ -103,6 +102,7 @@ export async function saveCategory(data: {
   location: string
   role: string
   description: string
+  descriptionFa: string
   extraFields: string
 }): Promise<ActionResult> {
   await assertAdmin()
@@ -125,7 +125,6 @@ export async function saveCategory(data: {
     data: {
       title: cleanTitle,
       slug,
-      titleFa: data.titleFa.trim(),
       client: data.client.trim(),
       projectTitle: data.projectTitle.trim(),
       year: data.year.trim(),
@@ -133,6 +132,7 @@ export async function saveCategory(data: {
       location: data.location.trim(),
       role: data.role.trim(),
       description: data.description ?? '',
+      descriptionFa: data.descriptionFa ?? '',
       extraFields: serializeExtraFields(parseExtraFields(data.extraFields)),
     },
   })
@@ -249,6 +249,17 @@ export async function clearLogo(): Promise<ActionResult> {
   await db.setting.upsert({
     where: { key: 'logoUrl' },
     create: { key: 'logoUrl', value: '' },
+    update: { value: '' },
+  })
+  revalidateSite()
+  return { ok: true }
+}
+
+export async function clearAboutImage(): Promise<ActionResult> {
+  await assertAdmin()
+  await db.setting.upsert({
+    where: { key: 'aboutImage' },
+    create: { key: 'aboutImage', value: '' },
     update: { value: '' },
   })
   revalidateSite()

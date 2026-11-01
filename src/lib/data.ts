@@ -41,6 +41,7 @@ export type Settings = {
   logoUrl: string
   aboutTitle: string
   aboutBody: string
+  aboutImage: string
   contactEmail: string
   contactPhone: string
   contactInstagram: string
@@ -53,6 +54,7 @@ const FALLBACK_SETTINGS: Settings = {
   logoUrl: '',
   aboutTitle: 'ABOUT ME',
   aboutBody: '',
+  aboutImage: '',
   contactEmail: '',
   contactPhone: '',
   contactInstagram: '',
