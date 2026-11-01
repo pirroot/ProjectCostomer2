@@ -1,42 +1,49 @@
-import { notFound } from 'next/navigation'
-import type { Metadata } from 'next'
-import SiteHeader from '@/components/site-header'
-import Slideshow from '@/components/slideshow'
-import TitleToggle from '@/components/title-toggle'
-import { RichText } from '@/components/richtext'
-import { getCategoryBySlug, getSettings } from '@/lib/data'
-import { parseExtraFields } from '@/lib/extra'
+import { notFound } from "next/navigation";
+import type { Metadata } from "next";
+import SiteHeader from "@/components/site-header";
+import Slideshow from "@/components/slideshow";
+import TitleToggle from "@/components/title-toggle";
+import { RichText } from "@/components/richtext";
+import { getCategoryBySlug, getSettings } from "@/lib/data";
+import { parseExtraFields } from "@/lib/extra";
 
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic";
 
-type PageProps = { params: Promise<{ slug: string }> }
+type PageProps = { params: Promise<{ slug: string }> };
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { slug } = await params
-  const category = await getCategoryBySlug(slug)
-  return { title: category?.title ?? 'Project' }
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const category = await getCategoryBySlug(slug);
+  return { title: category?.title ?? "Project" };
 }
 
 // fixed metadata block, in the exact order the client asked for
 const META_ROWS: Array<{
-  key: 'client' | 'projectTitle' | 'year' | 'category' | 'location' | 'role'
-  label: string
+  key: "client" | "projectTitle" | "year" | "category" | "location" | "role";
+  label: string;
 }> = [
-  { key: 'client', label: 'Client' },
-  { key: 'projectTitle', label: 'Project Title' },
-  { key: 'year', label: 'Year' },
-  { key: 'category', label: 'Category' },
-  { key: 'location', label: 'Location' },
-  { key: 'role', label: 'Role' },
-]
+  { key: "client", label: "Client" },
+  { key: "projectTitle", label: "Project Title" },
+  { key: "year", label: "Year" },
+  { key: "category", label: "Category" },
+  { key: "location", label: "Location" },
+  { key: "role", label: "Role" },
+];
 
 export default async function CategoryPage({ params }: PageProps) {
-  const { slug } = await params
-  const [category, settings] = await Promise.all([getCategoryBySlug(slug), getSettings()])
-  if (!category) notFound()
+  const { slug } = await params;
+  const [category, settings] = await Promise.all([
+    getCategoryBySlug(slug),
+    getSettings(),
+  ]);
+  if (!category) notFound();
 
-  const extraFields = parseExtraFields(category.extraFields)
-  const metaFilled = META_ROWS.some((r) => (category[r.key] ?? '').trim().length > 0) || extraFields.length > 0
+  const extraFields = parseExtraFields(category.extraFields);
+  const metaFilled =
+    META_ROWS.some((r) => (category[r.key] ?? "").trim().length > 0) ||
+    extraFields.length > 0;
 
   return (
     <div className="min-h-[100dvh] bg-white">
@@ -59,12 +66,14 @@ export default async function CategoryPage({ params }: PageProps) {
             {metaFilled && (
               <dl className="mt-8 space-y-2.5 md:mt-0">
                 {META_ROWS.map((row) =>
-                  (category[row.key] ?? '').trim() ? (
+                  (category[row.key] ?? "").trim() ? (
                     <div
                       key={row.key}
                       className="grid grid-cols-[110px_1fr] items-baseline gap-2 text-[11px]"
                     >
-                      <dt className="uppercase tracking-[0.18em] text-neutral-400">{row.label}</dt>
+                      <dt className="uppercase tracking-[0.18em] text-neutral-400">
+                        {row.label}
+                      </dt>
                       <dd className="font-semibold tracking-wide text-neutral-800">
                         {category[row.key]}
                       </dd>
@@ -76,8 +85,12 @@ export default async function CategoryPage({ params }: PageProps) {
                     key={f.label}
                     className="grid grid-cols-[110px_1fr] items-baseline gap-2 text-[11px]"
                   >
-                    <dt className="uppercase tracking-[0.18em] text-neutral-400">{f.label}</dt>
-                    <dd className="font-semibold tracking-wide text-neutral-800">{f.value}</dd>
+                    <dt className="uppercase tracking-[0.18em] text-neutral-400">
+                      {f.label}
+                    </dt>
+                    <dd className="font-semibold tracking-wide text-neutral-800">
+                      {f.value}
+                    </dd>
                   </div>
                 ))}
               </dl>
@@ -94,5 +107,5 @@ export default async function CategoryPage({ params }: PageProps) {
         </div>
       </main>
     </div>
-  )
+  );
 }
